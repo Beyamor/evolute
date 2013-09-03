@@ -1,3 +1,10 @@
-(ns evolute.app)
+(ns evolute.app
+  (:require [evolute.music :as music]))
 
-(js/alert "hello world")
+(set! (.-onload js/window)
+      #(music/play-song
+         [[:note "quarter" "D3"]
+          [:note "quarter" "D3"]
+          [:rest "quarter"]
+          [:note "quarter" "D3"]]
+         :volume 50))
