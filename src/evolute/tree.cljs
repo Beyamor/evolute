@@ -19,8 +19,27 @@
    5 (random-rest)
     (random-note)))
 
+(defn rand-int-range
+  [min max]
+  (+ min (rand-int (- max min))))
+
+(defn- random-branch
+  [depth]
+  (if (zero? depth)
+    (random-terminal)
+    (util-macros/probabilities
+      5 (random-terminal)
+      10 (apply node/repeat
+                (repeatedly
+                  (rand-int-range 2 4)
+                  #(random-branch (dec depth))))
+      (apply node/series
+             (repeatedly
+               (rand-int-range 1 5)
+               #(random-branch (dec depth)))))))
+
 (defn random
   []
   (apply node/series
-         (for [_ (range 10)]
-           (random-terminal))))
+         (for [_ (range (rand-int-range 3 5))]
+           (random-branch (rand-int-range 2 3)))))
