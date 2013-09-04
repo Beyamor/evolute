@@ -5,11 +5,11 @@
 
 (defmethod add-to-instrument :note
   [[_ rhythm pitch] instrument]
-  (.note instrument rhythm pitch))
+  (.note instrument (name rhythm) (.toUpperCase (name pitch))))
 
 (defmethod add-to-instrument :rest
   [[_ rhythm] instrument]
-  (.rest instrument rhythm))
+  (.rest instrument (name rhythm)))
 
 (defn add-elements
   [instrument song]

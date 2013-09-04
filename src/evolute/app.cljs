@@ -1,11 +1,9 @@
 (ns evolute.app
   (:require [evolute.music :as music]
-            [evolute.song :as song]
-            [evolute.tree :as tree]
-            [evolute.tree.node :as node]))
+            [evolute.song :as song]))
 
 (set! (.-onload js/window)
-      #(let [song (song/from-tree (tree/random))]
+      #(let [song (song/random)]
          (set! (.-innerHTML (.-body js/document)) song)
          (music/play-song song
                           :volume 100
