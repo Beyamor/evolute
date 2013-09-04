@@ -1,13 +1,14 @@
 (ns evolute.gui
   (:require [evolute.music :as music]
-            [dommy.core :as dommy])
+            [dommy.core :as dommy]
+            [evolute.song :as song])
   (:use-macros [dommy.macros :only [node sel1]]))
 
 (defn render-song
-  [{:keys [title]}]
+  [{:keys [index]}]
   (node
     [:div.song
-     title
+     (str "Song " index)
      [:button.play {:type "button"} "Play"]
      "Parent: " [:input.parent {:type "checkbox"}]]))
 
@@ -38,9 +39,23 @@
     (hook-up-play-button data)
     (hook-up-parent-button songs index)))
 
-(defn show-songs
+(declare create)
+
+(defn next-generation-button
+  [songs]
+  (doto (node [:button {:type "button"} "Next generation"])
+    (dommy/listen!
+      :click
+      (fn []
+        (when (>= (count (filter :selected @songs)) 2)
+          (swap! songs
+                 #(song/breed-set (count %) (filter :selected %)))
+          (create songs))))))
+
+(defn create
   [songs]
   (dommy/replace-contents!
     (sel1 :body)
     (node [:div#songs
-           (map (partial create-song-node songs) @songs)])))
+           (map (partial create-song-node songs) @songs)
+           (next-generation-button songs)])))

@@ -3,22 +3,10 @@
             [evolute.song :as song]
             [evolute.gui :as gui]))
 
-(defn song-model
-  [index song-data]
-  {:title (str "Song " (inc index))
-   :index index
-   :data song-data
-   :selected false})
-
 (defn create-initial-songs-model
   []
-  (->>
-    song/random
-    (repeatedly 8)
-    (map-indexed song-model)
-    vec
-    atom))
+  (atom (song/random-bunch 8)))
 
 (set! (.-onload js/window)
       #(let [songs-model (create-initial-songs-model)]
-         (gui/show-songs songs-model)))
+         (gui/create songs-model)))
