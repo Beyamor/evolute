@@ -1,10 +1,14 @@
 (ns evolute.app
-  (:require [evolute.music :as music]))
+  (:require [evolute.music :as music]
+            [evolute.tree :as tree]
+            [evolute.tree.node :as node]))
 
 (set! (.-onload js/window)
-      #(music/play-song
-         [[:note "quarter" "D3"]
-          [:note "quarter" "D3"]
-          [:rest "quarter"]
-          [:note "quarter" "D3"]]
-         :volume 50))
+      #(->
+         (node/series
+           (node/repeat 2
+                        (node/note :quarter :d3))
+           (node/rest :quarter)
+           (node/note :quarter :d3))
+         tree/realize
+         (music/play-song :volume 50)))
