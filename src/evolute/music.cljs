@@ -17,16 +17,17 @@
     (map #(add-to-instrument % instrument) song)))
 
 (defn play-song
-  [song & {:keys [volume]
-           :or {volume 100}}]
+  [song & {:keys [volume tempo time-signature]
+           :or {volume 100 tempo 180 time-signature [2 2]}}]
   (let [music (js/BandJS.)
-        instrument (.createInstrument music "square" "oscillators")]
+        ; instrument (.createInstrument music "square" "oscillators")]
+        instrument (.createInstrument music)]
     (doto instrument
       (add-elements song)
       .finish)
     (doto music
-      (.setTimeSignature 2 2)
-      (.setTempo 180)
+      (.setTimeSignature (first time-signature) (second time-signature))
+      (.setTempo tempo)
       (.setMasterVolume (/ volume 100))
       .end
       .play)))

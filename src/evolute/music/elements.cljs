@@ -8,4 +8,8 @@
 (def rhythms
   ["whole"
    "half"
-   "quarter"])
+   "quarter"
+   "dottedHalf"
+   "dottedQuarter"
+   "eighth"
+   "dottedEighth"])

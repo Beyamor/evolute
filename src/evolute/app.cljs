@@ -7,4 +7,7 @@
 (set! (.-onload js/window)
       #(let [song (tree/realize (create-tree/random))]
          (set! (.-innerHTML (.-body js/document)) song)
-         (music/play-song song :volume 50)))
+         (music/play-song song
+                          :volume 100
+                          :time-signature [4 4]
+                          :tempo 120)))
