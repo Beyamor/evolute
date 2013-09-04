@@ -3,12 +3,14 @@
             [evolute.tree :as tree]
             [evolute.tree.node :as node]))
 
+(def song-tree
+  (node/series
+    (node/repeat 2
+                 (node/note :quarter :d3))
+    (node/rest :quarter)
+    (node/note :quarter :d3)))
+
 (set! (.-onload js/window)
-      #(->
-         (node/series
-           (node/repeat 2
-                        (node/note :quarter :d3))
-           (node/rest :quarter)
-           (node/note :quarter :d3))
-         tree/realize
-         (music/play-song :volume 50)))
+      #(let [song (tree/realize song-tree)]
+         (set! (.-innerHTML (.-body js/document)) song)
+         (music/play-song song :volume 50)))
