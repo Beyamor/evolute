@@ -1,11 +1,10 @@
 (ns evolute.app
   (:require [evolute.music :as music]
-            [evolute.song :as song]))
+            [evolute.song :as song]
+            [evolute.gui :as gui]))
 
 (set! (.-onload js/window)
-      #(let [song (song/random)]
-         (set! (.-innerHTML (.-body js/document)) song)
-         (music/play-song song
-                          :volume 100
-                          :time-signature [4 4]
-                          :tempo 120)))
+      #(->>
+         song/random
+         (repeatedly 8)
+         gui/show-songs))
