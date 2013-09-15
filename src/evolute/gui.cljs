@@ -47,10 +47,12 @@
     (dommy/listen!
       :click
       (fn []
-        (when (>= (count (filter :selected @songs)) 2)
-          (swap! songs
-                 #(song/breed-set (count %) (filter :selected %)))
-          (create songs))))))
+        (if (>= (count (filter :selected @songs)) 2)
+          (do
+            (swap! songs
+                   #(song/breed-set (count %) (filter :selected %)))
+            (create songs))
+          (js/alert "Select at least two parents"))))))
 
 (defn create
   [songs]
